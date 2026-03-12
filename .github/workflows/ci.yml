@@ -15,27 +15,12 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version-file: go.mod
-      - name: Check formatting (gofmt)
+      - name: Install golangci-lint
+        run: go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+      - name: Run Make CI target
         run: |
-          files="$(gofmt -l .)"
-          if [ -n "$files" ]; then
-            echo "The following files are not gofmt formatted:"
-            echo "$files"
-            exit 1
-          fi
-      - name: Lint (go vet)
-        run: go vet ./...
-      - name: Lint (golangci-lint)
-        uses: golangci/golangci-lint-action@v6
-        with:
-          version: latest
-          args: --timeout=5m
-      - name: Unit and package tests
-        run: go test ./...
-      - name: Integration tests
-        run: go test ./internal/cli -run 'TestRunAgainstExamples|TestRunAgainstMonorepoExamples' -count=1 -v
-      - name: Build
-        run: go build ./cmd/helmcov
+          export PATH="$(go env GOPATH)/bin:$PATH"
+          make ci
       - name: Detect code changes for commit convention checks
         id: changed
         if: github.event_name == 'pull_request'
