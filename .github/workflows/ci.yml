@@ -10,10 +10,60 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-go@v5
         with:
           go-version-file: go.mod
-      - name: Test
+      - name: Check formatting (gofmt)
+        run: |
+          files="$(gofmt -l .)"
+          if [ -n "$files" ]; then
+            echo "The following files are not gofmt formatted:"
+            echo "$files"
+            exit 1
+          fi
+      - name: Lint (go vet)
+        run: go vet ./...
+      - name: Lint (golangci-lint)
+        uses: golangci/golangci-lint-action@v6
+        with:
+          version: latest
+          args: --timeout=5m
+      - name: Unit and package tests
         run: go test ./...
+      - name: Integration tests
+        run: go test ./internal/cli -run 'TestRunAgainstExamples|TestRunAgainstMonorepoExamples' -count=1 -v
       - name: Build
         run: go build ./cmd/helmcov
+      - name: Detect code changes for commit convention checks
+        id: changed
+        if: github.event_name == 'pull_request'
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            code:
+              - '**/*.go'
+              - 'go.mod'
+              - 'go.sum'
+              - 'Dockerfile*'
+              - '.github/workflows/*.yml'
+      - name: Validate conventional commit messages
+        if: github.event_name == 'pull_request' && steps.changed.outputs.code == 'true'
+        run: |
+          git fetch --no-tags origin "${{ github.base_ref }}" --depth=200
+          invalid=0
+          while IFS= read -r subject; do
+            if [[ "$subject" =~ ^Merge ]]; then
+              continue
+            fi
+            if [[ "$subject" =~ ^(feat|fix|chore|docs|style|refactor|perf|test|build|ci|revert)(\([a-zA-Z0-9._/-]+\))?(!)?:\ .+ ]]; then
+              continue
+            fi
+            echo "Non-conventional commit subject: $subject"
+            invalid=1
+          done < <(git log --format=%s "origin/${{ github.base_ref }}..HEAD")
+          if [ "$invalid" -ne 0 ]; then
+            echo "Conventional commits are required for code changes."
+            exit 1
+          fi

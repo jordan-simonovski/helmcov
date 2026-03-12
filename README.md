@@ -97,6 +97,14 @@ go run ./cmd/helmcov \
 
 ## GitHub Actions integration
 
+CI (`.github/workflows/ci.yml`) enforces:
+
+- `gofmt` formatting checks
+- `go vet` and `golangci-lint` linting
+- full Go test suite + explicit integration tests
+- build validation
+- conventional commit subjects on PRs when code files changed
+
 ### Binary mode
 
 ```yaml

@@ -56,6 +56,9 @@ Examples:
 - `feat(report): add verbose uncovered line refs`
 - `feat!: change default report format`
 
+CI validates conventional commit subjects on pull requests when code files are
+changed. This prevents non-releasable commits from landing on `main`.
+
 ## Tagging Convention
 
 This repository uses a single semver convention everywhere:
