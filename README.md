@@ -116,7 +116,7 @@ CI (`.github/workflows/ci.yml`) enforces:
 - `go vet` and `golangci-lint` linting
 - full Go test suite + explicit integration tests
 - build validation
-- conventional commit subjects on PRs when code files changed
+- Conventional Commit PR titles when code files changed (squash-merge friendly)
 
 The workflow executes `make ci` so CI and local checks stay aligned.
 
