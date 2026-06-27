@@ -22,6 +22,8 @@ type Config struct {
 	CoberturaPath      string
 	MarkdownPath       string
 	CommentMarker      string
+	MarkdownFileSummary bool
+	MarkdownIncludeTpl  bool
 	KubeVersion        string
 }
 
@@ -44,6 +46,8 @@ func ParseConfig(args []string) (Config, error) {
 	fs.StringVar(&cfg.CoberturaPath, "cobertura-file", "coverage.xml", "path for cobertura XML output")
 	fs.StringVar(&cfg.MarkdownPath, "markdown-file", "coverage.md", "path for markdown PR comment output")
 	fs.StringVar(&cfg.CommentMarker, "comment-marker", "helmcov-comment", "HTML comment marker for markdown PR output")
+	fs.BoolVar(&cfg.MarkdownFileSummary, "markdown-file-summary", false, "include per-file summary table in markdown output")
+	fs.BoolVar(&cfg.MarkdownIncludeTpl, "markdown-include-tpl", false, "include tpl(...) inline template sources in markdown output")
 	fs.StringVar(&cfg.KubeVersion, "kube-version", "1.28.0", "Kubernetes version for .Capabilities context")
 	fs.BoolVar(&cfg.Verbose, "verbose", false, "print per-file and uncovered coverage details")
 
