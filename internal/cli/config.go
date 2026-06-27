@@ -10,21 +10,21 @@ import (
 )
 
 type Config struct {
-	ChartPath          string
-	TestsPath          string
-	ChartsRootPath     string
-	Verbose            bool
-	Formats            []string
-	Threshold          float64
-	MaxScenarios       int
-	Seed               int64
-	GoCoverProfilePath string
-	CoberturaPath      string
-	MarkdownPath       string
-	CommentMarker      string
+	ChartPath           string
+	TestsPath           string
+	ChartsRootPath      string
+	Verbose             bool
+	Formats             []string
+	Threshold           float64
+	MaxScenarios        int
+	Seed                int64
+	GoCoverProfilePath  string
+	CoberturaPath       string
+	MarkdownPath        string
+	CommentMarker       string
 	MarkdownFileSummary bool
 	MarkdownIncludeTpl  bool
-	KubeVersion        string
+	KubeVersion         string
 }
 
 func ParseConfig(args []string) (Config, error) {
