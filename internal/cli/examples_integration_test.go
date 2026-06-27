@@ -37,9 +37,9 @@ func TestRunAgainstExamples(t *testing.T) {
 			tests: filepath.Join(repoRoot, "examples", "branch-heavy-chart", "tests"),
 		},
 		{
-			name:  "low-coverage",
-			chart: filepath.Join(repoRoot, "examples", "low-coverage-chart"),
-			tests: filepath.Join(repoRoot, "examples", "low-coverage-chart", "tests"),
+			name:            "low-coverage",
+			chart:           filepath.Join(repoRoot, "examples", "low-coverage-chart"),
+			tests:           filepath.Join(repoRoot, "examples", "low-coverage-chart", "tests"),
 			wantBranchBelow: 100.0,
 		},
 	}

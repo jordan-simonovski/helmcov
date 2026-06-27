@@ -383,4 +383,3 @@ func TestRenderAndTraceRegistersUnhitTplBranch(t *testing.T) {
 		t.Fatalf("expected tpl if true branch to remain unhit")
 	}
 }
-

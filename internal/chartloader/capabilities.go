@@ -47,10 +47,10 @@ func BuildCapabilities(kubeVersion string) map[string]any {
 		},
 		"APIVersions": DefaultAPIVersions(),
 		"HelmVersion": map[string]any{
-			"Version": "v3.14.0",
-			"GitCommit": "helmcov",
+			"Version":      "v3.14.0",
+			"GitCommit":    "helmcov",
 			"GitTreeState": "clean",
-			"GoVersion": "go1.23",
+			"GoVersion":    "go1.23",
 		},
 	}
 }
